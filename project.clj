@@ -1,4 +1,4 @@
-(defproject systems.billo/clj-usps "0.3.0"
+(defproject systems.billo/clj-usps "1.0.0-SNAPSHOT"
   :description "Clojure interface to the USPS Web Tools API"
   :url "https://github.com/billosys/clj-usps"
   :license {
