@@ -1,16 +1,36 @@
-# usps-clj
+# clj-usps
 
-A Clojure library designed to interface with USPS's outdated API.
+Clojure interface to the USPS Web Tools API
+
+
+This is a fork of
+[https://github.com/banzai-inc/usps-clj](https://github.com/banzai-inc/usps-clj).
+
 
 ## Install
 
 ``` clojure
-[usps-clj "0.1.0-SNAPSHOT"]
+[systems.billo/clj-usps "1.0.0-SNAPSHOT"]
 ```
+
+
+## Versions
+
+Original repo:
+* usps-clj 0.1.0
+* usps-clj 0.1.1
+
+This fork:
+* systems.billo/clj-usps 0.2.0 - this is identical to usps-clj 0.1.1,
+  modulo a name change
+* systems.billo/clj-usps 0.3.0 - still API-identical, but with updated deps
+* systems.billo/clj-usps 1.0.0+ - the beginning of breaking API changes
+
 
 ## Usage
 
-#### Validate an address
+
+### Validate an Address
 
 ``` clojure
 (validate-address
@@ -21,8 +41,10 @@ A Clojure library designed to interface with USPS's outdated API.
 
 Returns the validated address; returns nil if USPS reports an error.
 
+
 ## License
 
+Copyright © 2017, Billo Systems, Ltd. Co.
 Copyright © 2013 Banzai Inc.
 
 Distributed under the Eclipse Public License, the same as Clojure.
