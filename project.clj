@@ -1,3 +1,9 @@
+(defn get-prompt
+  [ns]
+  (str "\u001B[35m[\u001B[34m"
+       ns
+       "\u001B[35m]\u001B[33m λ\u001B[m=> "))
+
 (defproject systems.billo/clj-usps "1.0.0-SNAPSHOT"
   :description "Clojure interface to the USPS Web Tools API"
   :url "https://github.com/billosys/clj-usps"
@@ -9,7 +15,13 @@
     [org.clojure/data.xml "0.0.8"]
     [clj-http "3.7.0"]]
   :profiles {
+    :ubercompile {:aot :all}
+    :custom-repl {
+      :repl-options {
+        :init-ns usps.dev
+        :prompt ~get-prompt}}
     :dev {
+      :source-paths ["dev-resources/src"]
       :dependencies [
         [environ "1.1.0"]
         [org.clojure/tools.namespace "0.2.11"]]}
