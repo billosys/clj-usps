@@ -1,5 +1,4 @@
-(ns usps-clj.address
-  (:refer-clojure :exclude [get])
+(ns usps.address
   (:require [clj-http.client :as http]
             [clojure.data.xml :refer :all]
             [clojure.string :as string]))
@@ -41,14 +40,14 @@
 (defn- parse-response [response]
   (let [ret (parse (java.io.StringReader. response))]
     (if (or (has-error? ret)
-            (missing-zip4? ret)) nil 
+            (missing-zip4? ret)) nil
       {:street (get-address-item :Address2 ret)
        :city (get-address-item :City ret)
        :state (get-address-item :State ret)
        :zip (get-address-item :Zip5 ret)
        :zip_four (get-address-item :Zip4 ret)})))
 
-(defn validate-address
+(defn validate
   "Validate an address with USPS."
   [address usps-api-url usps-user-id]
   (parse-response (:body (http/get (address-request address

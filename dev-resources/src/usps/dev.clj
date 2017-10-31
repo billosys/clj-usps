@@ -6,7 +6,6 @@
     [clojure.string :as string]
     [clojure.tools.namespace.repl :as repl]
     [clojure.walk :refer [macroexpand-all]]
-    [trifl.java :refer [show-methods]]
     [usps.address :as address]))
 
 ;;; Aliases
