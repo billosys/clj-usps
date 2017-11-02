@@ -1,5 +1,6 @@
 (ns usps.dev
   (:require
+    [clojure.data.xml :as xml]
     [clojure.edn :as edn]
     [clojure.java.io :as io]
     [clojure.pprint :refer [pprint]]
