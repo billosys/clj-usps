@@ -1,7 +1,9 @@
 (ns usps.address
-  (:require [clj-http.client :as http]
-            [clojure.data.xml :refer :all]
-            [clojure.string :as string]))
+  (:require
+    [clj-http.client :as http]
+    [clojure.data.xml :as xml]
+    [clojure.string :as string]
+    [clojure.walk :as walk]))
 
 (def ^{:private true} bad-chars #"[&]")
 
@@ -38,9 +40,9 @@
   (nil? (get-address-item :Zip4 xml)))
 
 (defn- parse-response [response]
-  (let [ret (parse (java.io.StringReader. response))]
-    (if (or (has-error? ret)
-            (missing-zip4? ret)) nil
+  (let [ret (xml/parse (java.io.StringReader. response))]
+    (if (or (has-error? ret) (missing-zip4? ret))
+      response
       {:street (get-address-item :Address2 ret)
        :city (get-address-item :City ret)
        :state (get-address-item :State ret)
