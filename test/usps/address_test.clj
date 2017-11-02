@@ -1,4 +1,4 @@
-(ns usps.address-test
+(ns ^:system usps.address-test
   (:require [clojure.test :refer :all]
             [environ.core :refer :all]
             [usps.address :as address]))
