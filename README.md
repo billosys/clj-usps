@@ -33,7 +33,7 @@ This fork:
 ### Validate an Address
 
 ``` clojure
-(require '[usps.address :as address])
+(require '[usps.api.address :as address])
 (address/validate
   {:street "963 E 970 N" :state "UT" :city "Orem" :zip "84097"}
   usps-api-url

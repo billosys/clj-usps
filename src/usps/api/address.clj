@@ -1,47 +1,9 @@
-(ns usps.address
+(ns usps.api.address
   (:require
     [clj-http.client :as http]
     [clojure.data.xml :as xml]
     [clojure.string :as string]
     [clojure.walk :as walk]))
-
-(defrecord Address
-  [firm-name
-   address
-   address-other
-   city
-   state
-   urbanization
-   zip
-   zip4])
-
-(def fields->elements
-  {:firm-name :FirmName
-   :address :Address2
-   :address-other :Address1
-   :city :City
-   :state :State
-   :urbanization :Urbanization
-   :zip :Zip5
-   :zip4 :Zip4})
-
-(defn apply-address-constraints
-  "Remove option items that are empty, etc."
-  [address-map]
-  address-map)
-
-(defn field->element
-  [[k v]]
-  (xml/element k {} v))
-
-(defn record->xml
-  [record]
-  (->> record
-       (into {})
-       (apply-address-constraints)
-       (walk/postwalk-replace fields->elements)
-       (map field->element)
-       (xml/element :Address {})))
 
 (def ^{:private true} bad-chars #"[&]")
 

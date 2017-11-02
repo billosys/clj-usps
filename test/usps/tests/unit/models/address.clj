@@ -1,8 +1,8 @@
-(ns ^:unit usps.tests.unit.address
+(ns ^:unit usps.tests.unit.models.address
   (:require
-    [clojure.data.xml :as xml]
     [clojure.test :refer :all]
-    [usps.address :as address]))
+    [usps.models.address :as address]
+    [usps.util :as util]))
 
 (def addr1 (address/map->Address
             {:address ""
@@ -24,4 +24,4 @@
 
 (deftest record->xml
   (is (= addr1-xml
-         (xml/indent-str (address/record->xml addr1)))))
+         (util/pretty-xml (address/record->xml addr1)))))

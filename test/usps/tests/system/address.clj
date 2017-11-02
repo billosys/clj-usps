@@ -2,7 +2,7 @@
   (:require
     [clojure.test :refer :all]
     [environ.core :refer :all]
-    [usps.address :as address]))
+    [usps.api.address :as address]))
 
 (deftest addresses
   (let [usps-api-url (env :usps-api-url)

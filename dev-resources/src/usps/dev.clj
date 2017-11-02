@@ -7,7 +7,10 @@
     [clojure.string :as string]
     [clojure.tools.namespace.repl :as repl]
     [clojure.walk :refer [macroexpand-all]]
-    [usps.address :as address]))
+    [usps.api.address]
+    [usps.models.address :as address]
+    [usps.models.util :as models-util]
+    [usps.util :as util]))
 
 ;;; Aliases
 
