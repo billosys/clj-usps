@@ -9,6 +9,7 @@
     [clojure.walk :refer [macroexpand-all postwalk-replace]]
     [usps.api.address]
     [usps.models.address :as address-model]
+    [usps.models.address-response :as address-response-model]
     [usps.models.core :as models]
     [usps.models.error :as error-model]
     [usps.models.util :as models-util]

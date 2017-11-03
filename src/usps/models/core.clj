@@ -3,11 +3,13 @@
     [clojure.data.xml :as xml]
     [clojure.walk :as walk]
     [usps.models.address :as address]
+    [usps.models.address-response :as address-response]
     [usps.models.address-validation :as address-validation]
     [usps.models.error :as error]
     [usps.models.util :as util])
   (:import
     (usps.models.address AddressConverter)
+    (usps.models.address_response AddressResponseConverter)
     (usps.models.address_validation ValidationRequestConverter)
     (usps.models.error ErrorConverter)))
 
@@ -25,6 +27,10 @@
 (extend AddressConverter
         ConverterAPI
         address/behaviour)
+
+(extend AddressResponseConverter
+        ConverterAPI
+        address-response/behaviour)
 
 (extend ErrorConverter
         ConverterAPI
@@ -82,7 +88,7 @@
        (map (partial element->field converter))
        (into {})
        (walk/postwalk-replace (elements->fields converter))
-       (:constructor converter)))
+       ((:constructor converter))))
 
 (defn parse
   [str-data]
@@ -91,7 +97,9 @@
       :Error (-> element-obj
                  error/create
                  xml->record)
-      ; :AddressValidateResponse (-> element-obj
-      ;                              address-validation/create
-      ;                              xml->record)
+      :AddressValidateResponse (-> element-obj
+                                   :content ; get the Address element
+                                   first
+                                   address-response/create
+                                   xml->record)
       element-obj)))
