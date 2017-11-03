@@ -1,19 +1,7 @@
 (ns usps.models.util
   (:require
-    [clojure.data.xml :as xml]
-    [clojure.walk :as walk]))
+    [clojure.set :as set]))
 
-(defn field->element
-  [[k v]]
-  (xml/element k {} v))
-
-(defn record->xml
-  ([record constraints-fn fields-map wrapping-tag]
-    (record->xml record constraints-fn fields-map wrapping-tag {}))
-  ([record constraints-fn fields-map wrapping-tag wrapping-attrs]
-    (->> record
-         (into {})
-         constraints-fn
-         (walk/postwalk-replace fields-map)
-         (map field->element)
-         (xml/element wrapping-tag wrapping-attrs))))
+(defn elements->fields
+  [fields-map]
+  (set/map-invert fields-map))

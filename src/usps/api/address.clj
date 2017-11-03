@@ -2,56 +2,45 @@
   (:require
     [clj-http.client :as http]
     [clojure.data.xml :as xml]
+    [clojure.pprint :refer [pprint]]
     [clojure.string :as string]
-    [clojure.walk :as walk]))
+    [usps.models.address :as address]
+    [usps.models.address-validation :as address-validation]
+    [usps.models.core :as models]
+    [usps.models.error :as error])
+  (:import
+    (usps.models.address Address)
+    (usps.models.error ServiceError)))
 
-(def ^{:private true} bad-chars #"[&]")
+(def endpoint "http://production.shippingapis.com/")
 
-(defn- remove-bad-chars [line]
-  (string/replace line bad-chars ""))
+(defn address-request
+  [address usps-user-id]
+  (->> address
+       (address/create)
+       (models/record->xml)
+       (address-validation/create usps-user-id)
+       (models/record->xml)
+       (xml/emit-str)
+       (str endpoint "?API=Verify&XML=")))
 
-(defn- get-response-contents [xml]
-  (:content (first (:content xml))))
+(defmulti handle-response
+  type)
 
-(defn- get-address-item [item el]
-  (first (:content (first (filter #(= (:tag %) item) (get-response-contents el))))))
+(defmethod handle-response ServiceError
+  [response]
+  (println (format "\nERROR: %s\n" (:description response)))
+  {:error (into {} (filter second response))})
 
-(defn- address-as-xml [address]
-  (str "<Address>"
-          "<Address1></Address1>"
-          "<Address2>" (remove-bad-chars (:street address)) "</Address2>"
-          "<City>" (:city address) "</City>"
-          "<State>" (:state address) "</State>"
-          "<Zip5>" (:zip address) "</Zip5>"
-          "<Zip4></Zip4>"
-        "</Address>"))
-
-(defn- address-request
-  [address usps-api-url usps-user-id]
-  (str usps-api-url "?API=Verify&XML="
-       "<AddressValidateRequest%20USERID=\"" usps-user-id "\">"
-          (address-as-xml address)
-       "</AddressValidateRequest>"))
-
-(defn- has-error? [xml]
-  (not (nil? (get-address-item :Error xml))))
-
-(defn- missing-zip4? [xml]
-  (nil? (get-address-item :Zip4 xml)))
-
-(defn- parse-response [response]
-  (let [ret (xml/parse (java.io.StringReader. response))]
-    (if (or (has-error? ret) (missing-zip4? ret))
-      response
-      {:street (get-address-item :Address2 ret)
-       :city (get-address-item :City ret)
-       :state (get-address-item :State ret)
-       :zip (get-address-item :Zip5 ret)
-       :zip_four (get-address-item :Zip4 ret)})))
+(defmethod handle-response :default
+  [response]
+  response)
 
 (defn validate
   "Validate an address with USPS."
-  [address usps-api-url usps-user-id]
-  (parse-response (:body (http/get (address-request address
-                                                    usps-api-url
-                                                    usps-user-id)))))
+  [address usps-user-id]
+  (->> (address-request address usps-user-id)
+       (http/get)
+       :body
+       (models/parse)
+       (handle-response)))

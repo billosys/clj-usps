@@ -1,15 +1,12 @@
 (ns usps.models.address
   (:require
-    [clj-http.client :as http]
-    [clojure.data.xml :as xml]
-    [clojure.string :as string]
-    [clojure.walk :as walk]
+    [usps.models.base :as base]
     [usps.models.util :as util]))
 
 (defrecord Address
   [firm-name
-   address
-   address-other
+   street
+   street-other
    city
    state
    urbanization
@@ -17,22 +14,42 @@
    zip4])
 
 (def fields->elements
-  {:firm-name :FirmName
-   :address :Address2
-   :address-other :Address1
+  (array-map
+   :firm-name :FirmName
+   :street-other :Address1
+   :street :Address2
    :city :City
    :state :State
    :urbanization :Urbanization
    :zip :Zip5
-   :zip4 :Zip4})
+   :zip4 :Zip4))
 
-(defn apply-address-constraints
-  "Remove option items that are empty, etc."
-  [address-map]
-  address-map)
+(def elements->fields (util/elements->fields fields->elements))
 
-(defn record->xml
-  [record]
-  (util/record->xml
-    record apply-address-constraints fields->elements :Address))
+(defn apply-constraints
+  "Remove optional items that are empty, add missing, etc."
+  [this address-map]
+  address-map
+  (if (nil? (:urbanization address-map))
+    (dissoc address-map :urbanization)
+    address-map))
 
+(defrecord AddressConverter
+  [record
+   element-obj
+   wrapping-tag
+   wrapping-attrs
+   constructor])
+
+(def behaviour
+  (merge base/behaviour
+         {:fields->elements (fn [_] fields->elements)
+          :elements->fields (fn [_] elements->fields)
+          :apply-constraints apply-constraints}))
+
+(defn create
+  [data]
+  (map->AddressConverter
+    {:record (map->Address data)
+     :wrapping-tag :Address
+     :constructor map->Address}))
