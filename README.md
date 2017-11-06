@@ -1,7 +1,10 @@
 # clj-usps
 
-Clojure interface to the USPS Web Tools API
+[![Build Status][travis-badge]][travis][![Dependencies Status][deps-badge]][deps][![Clojars Project][clojars-badge]][clojars][![Clojure version][clojure-v]](project.clj)
 
+*Clojure interface to the USPS Web Tools API*
+
+[![][logo]][logo-large]
 
 This is a fork of
 [https://github.com/banzai-inc/usps-clj](https://github.com/banzai-inc/usps-clj).
@@ -70,3 +73,18 @@ Copyright © 2017, Billo Systems, Ltd. Co.
 Copyright © 2013 Banzai Inc.
 
 Distributed under the Eclipse Public License, the same as Clojure.
+
+
+<!-- Named page links below: /-->
+
+[travis]: https://travis-ci.org/billosys/clj-usps
+[travis-badge]: https://travis-ci.org/billosys/clj-usps.png?branch=master
+[deps]: http://jarkeeper.com/billosys/clj-usps
+[deps-badge]: http://jarkeeper.com/billosys/clj-usps/status.svg
+[logo]: resources/images/old-usps-logo.png
+[logo-large]: resources/images/old-usps-logo-large.png
+[tag-badge]: https://img.shields.io/github/tag/billosys/clj-usps.svg
+[tag]: https://github.com/billosys/clj-usps/tags
+[clojure-v]: https://img.shields.io/badge/clojure-1.8.0-blue.svg
+[clojars]: https://clojars.org/systems.billo/clj-usps
+[clojars-badge]: https://img.shields.io/clojars/v/systems.billo/clj-usps.svg
