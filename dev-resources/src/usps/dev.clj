@@ -8,6 +8,7 @@
     [clojure.tools.namespace.repl :as repl]
     [clojure.walk :refer [macroexpand-all postwalk-replace]]
     [usps.api.address]
+    [usps.config :as config]
     [usps.models.address :as address-model]
     [usps.models.address-response :as address-response-model]
     [usps.models.core :as models]

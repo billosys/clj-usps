@@ -29,17 +29,35 @@ This fork:
 
 ## Usage
 
+### Create a Client
+
+```clj
+(require '[usps.api.core :as client])
+(def usps-client (client/create))
+```
+
+This will read your USPS client user ID from either the environment or, failing
+that, from a configuration file: `~/.usps/client.ini`. The config file is
+expected to be in the following format:
+
+```ini
+[default]
+user-id = abcdefg123456789
+```
+
 
 ### Validate an Address
 
-``` clojure
+```clj
 (require '[usps.api.address :as address])
 (address/validate
-  {:street "963 E 970 N" :state "UT" :city "Orem" :zip "84097"}
-  usps-user-id)
+  {:street "963 E 970 N" :state "UT" :city "Orem" :zip "84097"})
 ```
 
 Returns the validated address.
+
+The USPS API user ID is taken from either the environment variable
+`USPS_USER_ID` or from the config/INI file indicated above.
 
 If an error is encountered, it is printed to `stdout` but a full error data
 structure is also returned.

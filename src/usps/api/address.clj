@@ -4,6 +4,7 @@
     [clojure.data.xml :as xml]
     [clojure.pprint :refer [pprint]]
     [clojure.string :as string]
+    [usps.config :as config]
     [usps.models.address :as address]
     [usps.models.address-validation :as address-validation]
     [usps.models.core :as models]
@@ -15,11 +16,11 @@
 (def endpoint "http://production.shippingapis.com/")
 
 (defn address-request
-  [address usps-user-id]
+  [address user-id]
   (->> address
        (address/create)
        (models/record->xml)
-       (address-validation/create usps-user-id)
+       (address-validation/create user-id)
        (models/record->xml)
        (xml/emit-str)
        (str endpoint "?API=Verify&XML=")))
@@ -43,8 +44,8 @@
 
 (defn validate
   "Validate an address with USPS."
-  [address usps-user-id]
-  (->> (address-request address usps-user-id)
+  [address]
+  (->> (address-request address (config/user-id))
        (http/get)
        :body
        (models/parse)

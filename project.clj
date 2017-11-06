@@ -11,9 +11,10 @@
     :name "Eclipse Public License"
     :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [
+    [clj-http "3.7.0"]
+    [clojusc/env-ini "0.4.1"]
     [org.clojure/clojure "1.8.0"]
-    [org.clojure/data.xml "0.0.8"]
-    [clj-http "3.7.0"]]
+    [org.clojure/data.xml "0.0.8"]]
   :profiles {
     :ubercompile {:aot :all}
     :custom-repl {
