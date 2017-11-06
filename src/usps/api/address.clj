@@ -30,11 +30,16 @@
 (defmethod handle-response ServiceError
   [response]
   (println (format "\nERROR: %s\n" (:description response)))
-  {:error (into {} (filter second response))})
+  (->> response
+       (filter second)
+       (into {})
+       (hash-map :error)))
 
 (defmethod handle-response :default
   [response]
-  response)
+  (->> response
+       (filter second)
+       (into {})))
 
 (defn validate
   "Validate an address with USPS."
