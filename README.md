@@ -36,11 +36,13 @@ This fork:
 (require '[usps.api.address :as address])
 (address/validate
   {:street "963 E 970 N" :state "UT" :city "Orem" :zip "84097"}
-  usps-api-url
   usps-user-id)
 ```
 
-Returns the validated address; returns nil if USPS reports an error.
+Returns the validated address.
+
+If an error is encountered, it is printed to `stdout` but a full error data
+structure is also returned.
 
 
 ## License
