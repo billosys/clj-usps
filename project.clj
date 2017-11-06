@@ -4,7 +4,7 @@
        ns
        "\u001B[35m]\u001B[33m λ\u001B[m=> "))
 
-(defproject systems.billo/clj-usps "1.0.0-SNAPSHOT"
+(defproject systems.billo/clj-usps "1.0.0"
   :description "Clojure interface to the USPS Web Tools API"
   :url "https://github.com/billosys/clj-usps"
   :license {

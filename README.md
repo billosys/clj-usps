@@ -66,6 +66,7 @@ structure is also returned.
 ## License
 
 Copyright © 2017, Billo Systems, Ltd. Co.
+
 Copyright © 2013 Banzai Inc.
 
 Distributed under the Eclipse Public License, the same as Clojure.
