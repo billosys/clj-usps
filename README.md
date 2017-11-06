@@ -10,7 +10,7 @@ This is a fork of
 ## Install
 
 ``` clojure
-[systems.billo/clj-usps "1.0.0-SNAPSHOT"]
+[systems.billo/clj-usps "1.0.0"]
 ```
 
 
